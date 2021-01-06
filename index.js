@@ -9,7 +9,7 @@ try {
     const swifdog = require('swifdog')(username, password)
     const SimpleDateFormat = require('@riversun/simple-date-format');
 
-    swifdog.projects.create(name, (err, response) => {
+    swifdog.projects.create("example-project", (err, response) => {
         if (err) {
             core.setFailed(err)
         } else {
