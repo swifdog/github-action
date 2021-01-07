@@ -5,52 +5,20 @@ try {
     const username = core.getInput('username')
     const password = core.getInput('password')
 
-    console.log(username, password)
-    const swifdog = require('swifdog')(username, password)
-    const SimpleDateFormat = require('@riversun/simple-date-format');
+    const projectid = core.getInput('projectid')
+    const packetid = core.getInput('packetid')
+    const image = core.getInput('image')
 
-    swifdog.projects.create("example-project", (err, response) => {
+    const swifdog = require('swifdog')(username, password)
+
+    swifdog.projects.packets.updateImage(projectid, packetid, image, (err, response) => {
         if (err) {
             core.setFailed(err)
         } else {
-            const projectid = response.id;
-            console.log('created project with id: ' + projectid)
-
-            swifdog.projects.registryCredentials.create(projectid, "pkg.cloud-registry.com", "paskutscha@gmail.com", "paskutscha@gmail.com", "MTM4MzA0YWMtOWNhZC00Y2Y3LTlmN2", (err, response) => {
-                if (err) {
-                    core.setFailed(err)
-                } else {
-                    console.log('create registryCredentials with id = ' + response.id)
-
-                    swifdog.projects.packets.create(projectid, 'webapp', 'nginx:latest', (err, response) => {
-                        if (err) {
-                            core.setFailed(err)
-                        } else {
-                            const packetid = response.id
-                            console.log('create packet with id = ' + packetid)
-
-                            // create cool domain!
-                            const date = new Date('2018/07/17 12:08:56');
-                            const sdf = new SimpleDateFormat("HH-mm-ss-dd-MM-yyyy");
-                            const prefix = sdf.format(date);
-
-                            const hostname = prefix + '.demo.kubexsrv.de';
-
-                            swifdog.projects.packets.ingress.create(projectid, packetid, '80', hostname, (err, response) => {
-                                if (err) {
-                                    core.setFailed(err)
-                                } else {
-                                    const ingressid = response.id
-                                    console.log('ingress id: ' + ingressid)
-                                    core.setOutput("hostname", hostname)
-                                }
-                            });
-                        }
-                    });
-                }
-            });
+            core.setOutput("result", response)
         }
     });
+
 } catch (error) {
     core.setFailed(error.message);
 }

@@ -7,9 +7,20 @@ inputs:
   password:
     description: 'Login password'
     required: true
+  projectid:
+    description: 'projectid'
+    required: true
+  packetid:
+    description: 'packetid'
+    required: true
+  image:
+    description: 'image'
+    required: true
+
 outputs:
-  hostname:
-    description: 'url to the deployed app'
+  result:
+    description: 'response from our api'
+
 runs:
   using: 'node12'
   main: 'index.js'
