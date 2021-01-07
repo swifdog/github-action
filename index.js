@@ -16,27 +16,35 @@ try {
             const projectid = response.id;
             console.log('created project with id: ' + projectid)
 
-            swifdog.projects.packets.create(projectid, 'webapp', 'nginx:latest', (err, response) => {
+            swifdog.projects.registryCredentials.create(projectid, "pkg.cloud-registry.com", "paskutscha@gmail.com", "paskutscha@gmail.com", "MTM4MzA0YWMtOWNhZC00Y2Y3LTlmN2", (err, response) => {
                 if (err) {
                     core.setFailed(err)
                 } else {
-                    const packetid = response.id
-                    console.log('create packet with id = ' + packetid)
+                    console.log('create registryCredentials with id = ' + response.id)
 
-                    // create cool domain!
-                    const date = new Date('2018/07/17 12:08:56');
-                    const sdf = new SimpleDateFormat("HH-mm-ss-dd-MM-yyyy");
-                    const prefix = sdf.format(date);
-
-                    const hostname = prefix + '.demo.kubexsrv.de';
-
-                    swifdog.projects.packets.ingress.create(projectid, packetid, '80', hostname, (err, response) => {
+                    swifdog.projects.packets.create(projectid, 'webapp', 'nginx:latest', (err, response) => {
                         if (err) {
                             core.setFailed(err)
                         } else {
-                            const ingressid = response.id
-                            console.log('ingress id: ' + ingressid)
-                            core.setOutput("hostname", hostname)
+                            const packetid = response.id
+                            console.log('create packet with id = ' + packetid)
+
+                            // create cool domain!
+                            const date = new Date('2018/07/17 12:08:56');
+                            const sdf = new SimpleDateFormat("HH-mm-ss-dd-MM-yyyy");
+                            const prefix = sdf.format(date);
+
+                            const hostname = prefix + '.demo.kubexsrv.de';
+
+                            swifdog.projects.packets.ingress.create(projectid, packetid, '80', hostname, (err, response) => {
+                                if (err) {
+                                    core.setFailed(err)
+                                } else {
+                                    const ingressid = response.id
+                                    console.log('ingress id: ' + ingressid)
+                                    core.setOutput("hostname", hostname)
+                                }
+                            });
                         }
                     });
                 }
