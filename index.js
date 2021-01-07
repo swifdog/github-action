@@ -2,12 +2,12 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 
 try {
-    const username = core.getInput('username')
-    const password = core.getInput('password')
+    const username = core.getInput('username') || process.env.username
+    const password = core.getInput('password') || process.env.password
 
-    const projectid = core.getInput('projectid')
-    const packetid = core.getInput('packetid')
-    const image = core.getInput('image')
+    const projectid = core.getInput('projectid') || process.env.projectid
+    const packetid = core.getInput('packetid') || process.env.packetid
+    const image = core.getInput('image') || process.env.image
 
     const swifdog = require('swifdog')(username, password)
 
